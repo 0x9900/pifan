@@ -6,6 +6,7 @@
 
 import atexit
 import logging
+import os
 import time
 
 import RPi.GPIO as io
@@ -21,6 +22,9 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
                     datefmt='%H:%M:%S', level=logging.INFO)
 
 class Fan(object):
+  """Manages the fan. This class initialise the GPIO pin and provide the
+  methods to turn on and off the fan"""
+
   def __init__(self, pin=FAN_PIN):
     self._pin = pin
     io.setup(self._pin, io.OUT, initial=io.LOW)
@@ -54,7 +58,24 @@ def get_temp():
   logging.debug("Temperature: %.2f", temp)
   return temp
 
+def set_loglevel():
+  log_level = os.getenv('LOGLEVEL')
+  if not log_level:
+    return
+
+  logger = logging.getLogger()
+  try:
+    level = logging._checkLevel(log_level.upper())
+  except ValueError as err:
+    logging.error(err)
+  else:
+    logger.setLevel(level)
+
+
 def main():
+
+  set_loglevel()
+
   fan = Fan(FAN_PIN)
   atexit.register(fan.cleanup)
 

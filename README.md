@@ -41,6 +41,24 @@ $ sudo install.sh
 This will install and run the service. The next time you boot your
 the system, the fan service will be automatically started.
 
+### Typical installation's output
+
+```
+$ sudo install.sh
+Installing fan.py
+Installing the fan service
+Starting the service
+* fan.service - Fan Service
+   Loaded: loaded (/usr/lib/systemd/system/fan.service; static; vendor preset: disabled)
+   Active: active (running) since Sun 2019-07-28 10:38:16 PDT; 2s ago
+ Main PID: 9771 (fan)
+    Tasks: 1 (limit: 512)
+   CGroup: /system.slice/fan.service
+           `-9771 /usr/bin/python /usr/local/bin/fan
+
+Jul 28 10:38:16 echostar systemd[1]: Started Fan Service.
+Jul 28 10:38:16 echostar fan[9771]: 10:38:16 INFO: GPIO pin(26) configured
+```
 
 ## Manual installation
 
@@ -68,28 +86,28 @@ $ systemctl enable fan.service
 
 Debug output of the program `fan` running.
 ```
-07:29:46 INFO: GPIO pin(26) configured
-07:29:46 WARNING: Temperature: 41.86
-07:29:46 INFO: Fan(26) -> OFF
-07:30:17 WARNING: Temperature: 41.86
-07:30:48 WARNING: Temperature: 42.93
-07:30:48 INFO: Fan(26) -> ON
-07:31:19 WARNING: Temperature: 42.93
-07:31:50 WARNING: Temperature: 42.39
-07:32:21 WARNING: Temperature: 41.86
-07:32:21 INFO: Fan(26) -> OFF
-07:32:52 WARNING: Temperature: 41.86
-07:33:23 WARNING: Temperature: 42.39
-07:33:23 INFO: Fan(26) -> ON
-07:33:54 WARNING: Temperature: 41.86
-07:33:54 INFO: Fan(26) -> OFF
-07:34:25 WARNING: Temperature: 42.93
-07:34:25 INFO: Fan(26) -> ON
-07:34:56 WARNING: Temperature: 41.86
-07:34:56 INFO: Fan(26) -> OFF
-07:35:28 WARNING: Temperature: 42.39
-07:35:28 INFO: Fan(26) -> ON
-07:35:59 WARNING: Temperature: 42.93
-07:36:30 WARNING: Temperature: 41.86
-07:36:30 INFO: Fan(26) -> OFF
+11:29:46 INFO: GPIO pin(26) configured
+11:29:46 WARNING: Temperature: 41.86
+11:29:46 INFO: Fan(26) -> OFF
+11:30:17 WARNING: Temperature: 41.86
+11:30:48 WARNING: Temperature: 42.93
+11:30:48 INFO: Fan(26) -> ON
+11:31:19 WARNING: Temperature: 42.93
+11:31:50 WARNING: Temperature: 42.39
+11:32:21 WARNING: Temperature: 41.86
+11:32:21 INFO: Fan(26) -> OFF
+11:32:52 WARNING: Temperature: 41.86
+11:33:23 WARNING: Temperature: 42.39
+11:33:23 INFO: Fan(26) -> ON
+11:33:54 WARNING: Temperature: 41.86
+11:33:54 INFO: Fan(26) -> OFF
+11:34:25 WARNING: Temperature: 42.93
+11:34:25 INFO: Fan(26) -> ON
+11:34:56 WARNING: Temperature: 41.86
+11:34:56 INFO: Fan(26) -> OFF
+11:35:28 WARNING: Temperature: 42.39
+11:35:28 INFO: Fan(26) -> ON
+11:35:59 WARNING: Temperature: 42.93
+11:36:30 WARNING: Temperature: 41.86
+11:36:30 INFO: Fan(26) -> OFF
 ```
