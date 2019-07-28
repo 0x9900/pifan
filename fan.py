@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #
 # (c) W6BSD Fred Cirera
+# https://github.com/0x9900/pifan
 #
 
 import atexit
