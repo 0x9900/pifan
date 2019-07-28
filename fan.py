@@ -29,13 +29,13 @@ class Fan(object):
     if io.input(self._pin) is io.HIGH:
       return
     io.output(self._pin, io.HIGH)
-    logging.info('Fan(%d) -> ON', self._pin)
+    logging.debug('Fan(%d) -> ON', self._pin)
 
   def off(self):
     if io.input(self._pin) is io.LOW:
       return
     io.output(self._pin, io.LOW)
-    logging.info('Fan(%d) -> OFF', self._pin)
+    logging.debug('Fan(%d) -> OFF', self._pin)
 
   def cleanup(self):
     logging.info('cleanup')
@@ -50,7 +50,7 @@ def get_temp():
     return 0
 
   temp = float(rawtemp) / 1000
-  logging.warning("Temperature: %.2f", temp)
+  logging.debug("Temperature: %.2f", temp)
   return temp
 
 def main():
@@ -65,4 +65,7 @@ def main():
     time.sleep(SLEEP)
 
 if __name__ == "__main__":
-  main()
+  try:
+    main()
+  except KeyboardInterrupt:
+    logging.critical('Interrupted by user')
