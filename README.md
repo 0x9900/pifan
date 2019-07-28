@@ -1,29 +1,29 @@
 # Pi Fan
 
 I build "embedded" systems based on the Raspberry Pi. For heat
-dissipation these systems have a fan. This little program check the
-temperature of the Raspberry Pi and turn on a fan connected on a GPIO
+dissipation, these systems have a fan. This little program checks the
+temperature of the Raspberry Pi and turns on a fan connected on a GPIO
 port.
 
-Here is an example of such system: [AllStar Node](http://0x9900.com/mobile-allstar-node/)
+Here is an example of such a system: [AllStar Node](http://0x9900.com/mobile-allstar-node/)
 
 ## Dependencies
 
-The program `fan` does not require any dependencies beside the
+The program `fan` does not require any dependencies besides the
 RPi.GPIO library to access the GPIO pins on your board. If you are
 using an image made for the Raspberry Pi it comes pre-installed. In
 case you still need to install it here are the instructions.
 
-First you need to update the available package versions:
+First, you need to update the available package versions:
 
 ```
-sudo apt-get update
+$ sudo apt-get update
 ```
 
 Then install the RPi.GPIO package:
 
 ```
-sudo apt-get install rpi.gpio
+$ sudo apt-get install rpi.gpio
 ```
 
 If it is already installed it will be upgraded if a newer version is
@@ -35,11 +35,11 @@ To install the program `fan` and the service just run the install
 script.
 
 ```
-sudo install.sh
+$ sudo install.sh
 ```
 
 This will install and run the service. The next time you boot your
-system, the fan service will be automatically started.
+the system, the fan service will be automatically started.
 
 
 ## Manual installation
@@ -49,8 +49,8 @@ directory to `/usr/local/bin/fan`. Then make sure that file is
 executable.
 
 ```
-sudo cp fan.py /usr/local/bin/fan
-sudo chmod a+x /usr/local/bin/fan
+$ sudo cp fan.py /usr/local/bin/fan
+$ sudo chmod a+x /usr/local/bin/fan
 ```
 
 ## Running
@@ -60,13 +60,15 @@ the file `fan.service` into the directory `/lib/systemd/system`, then
 inform `systemd` that it needs to run that service.
 
 ```
-systemctl enable fan.service
+$ systemctl enable fan.service
 
 ```
 
 ## Example
 
+Debug output of the program `fan` running.
 ```
+07:29:46 INFO: GPIO pin(26) configured
 07:29:46 WARNING: Temperature: 41.86
 07:29:46 INFO: Fan(26) -> OFF
 07:30:17 WARNING: Temperature: 41.86
