@@ -1,0 +1,8 @@
+[Unit]
+Description=Fan Service
+After=local-fs.target
+
+[Service]
+Type=simple
+Restart=on-failure
+ExecStart=/usr/local/bin/fan
