@@ -7,6 +7,8 @@
 import atexit
 import logging
 import os
+import signal
+import sys
 import time
 
 import RPi.GPIO as io
@@ -72,6 +74,9 @@ def set_loglevel():
   else:
     logger.setLevel(level)
 
+def sig_handler(sig, frame):
+  logging.critical('Signal: %d caught', sig)
+  sys.exit(0)
 
 def main():
 
@@ -79,6 +84,8 @@ def main():
 
   fan = Fan(FAN_PIN)
   atexit.register(fan.cleanup)
+  signal.signal(signal.SIGQUIT, sig_handler)
+  signal.signal(signal.SIGTERM, sig_handler)
 
   while True:
     if get_temp() > THRESHOLD:
