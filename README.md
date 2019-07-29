@@ -36,11 +36,11 @@ available. If it is not already installed it will be installed.
 
 ### GPIO Library installation on Allstar distro from hamvoip
 
-The Allstar distribution built by hamvoip doesn't provide the GPIO
-library. Also, at the time I am writing these lines hamvoip uses an
-older ArchLinux distro with an old GPIO library. Therefore the best
-way to have GPIO library in good working condition is to install it
-from the sources. Don't worry, it is not that hard.
+The Allstar distribution built by [hamvoip](https://www.hamvoip.org)
+doesn't provide the GPIO library. Also, at the time I am writing these
+lines hamvoip uses an older ArchLinux distro with an old GPIO library.
+Therefore the best way to have GPIO library in good working condition
+is to install it from the sources. Don't worry, it is not that hard.
 
 The version of the GPIO library used in the following lines is the
 version 0.7.0. In your installation, you should use the latest
