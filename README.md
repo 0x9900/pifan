@@ -6,6 +6,8 @@ temperature of the Raspberry Pi and turns on a fan connected on a GPIO
 port.
 
 Here is an example of such a system: [AllStar Node](http://0x9900.com/mobile-allstar-node/)
+I am also using this program for the ParachuteMobile [APRS iGate](http://0x9900.com/aprs-igate-for-parachute-mobile/)
+
 
 ## Dependencies
 
