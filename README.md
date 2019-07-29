@@ -34,7 +34,7 @@ Then install the RPi.GPIO package:
 If it is already installed it will be upgraded if a newer version is
 available. If it is not already installed it will be installed.
 
-### PIO Library installation on Allstar distro from hamvoip
+### GPIO Library installation on Allstar distro from hamvoip
 
 The Allstar distribution built by hamvoip doesn't provide the GPIO
 library. Also, at the time I am writing these lines hamvoip uses an
