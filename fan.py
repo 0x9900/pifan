@@ -42,7 +42,8 @@ class Fan(object):
     io.output(self._pin, io.LOW)
     logging.debug('Fan(%d) -> OFF', self._pin)
 
-  def cleanup(self):
+  @staticmethod
+  def cleanup():
     logging.info('cleanup')
     io.cleanup()
 
