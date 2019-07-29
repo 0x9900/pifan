@@ -16,20 +16,49 @@ RPi.GPIO library to access the GPIO pins on your board. If you are
 using an image made for the Raspberry Pi it comes pre-installed. In
 case you still need to install it here are the instructions.
 
+### Installing the GPIO library on any Debian based distro
+
 First, you need to update the available package versions:
 
 ```
-$ sudo apt-get update
+ $ sudo apt-get update
 ```
 
 Then install the RPi.GPIO package:
 
 ```
-$ sudo apt-get install rpi.gpio
+ $ sudo apt-get install rpi.gpio
 ```
 
 If it is already installed it will be upgraded if a newer version is
 available. If it is not already installed it will be installed.
+
+### PIO Library installation on Allstar distro from hamvoip
+
+The Allstar distribution built by hamvoip doesn't provide the GPIO
+library. Also, at the time I am writing these lines hamvoip uses an
+older ArchLinux distro with an old GPIO library. Therefore the best
+way to have GPIO library in good working condition is to install it
+from the sources. Don't worry, it is not that hard.
+
+The version of the GPIO library used in the following lines is the
+version 0.7.0. In your installation, you should use the latest
+version.
+
+From your shell, prompt here are the command to use
+
+```
+ # cd /tmp
+
+ # wget https://pypi.python.org/packages/source/R/RPi.GPIO/RPi.GPIO-0.7.0.tar.gz
+
+ # tar xzvf RPi.GPIO-0.7.0.tar.gz
+
+ # cd RPi.GPIO-0.7.0/
+
+ # python ./setup.py install
+```
+
 
 ## Installation
 
@@ -37,7 +66,7 @@ To install the program `fan` and the service just run the install
 script.
 
 ```
-$ sudo install.sh
+ $ sudo install.sh
 ```
 
 This will install and run the service. The next time you boot your
