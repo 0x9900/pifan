@@ -12,6 +12,7 @@ import sys
 import time
 
 from ConfigParser import ConfigParser
+from functools import partial
 from io import StringIO
 
 import RPi.GPIO as io
@@ -26,7 +27,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
 CONFIG_FILE = "/etc/fan.conf"
 CONFIG_DEFAULT = u"""
 [FAN]
-thermal_file: "/sys/class/thermal/thermal_zone0/temp")
+thermal_file: /sys/class/thermal/thermal_zone0/temp
 pin: 26
 sleep: 31
 threshold: 42.0
@@ -35,6 +36,7 @@ threshold: 42.0
 def Config():
   parser = ConfigParser()
   parser.readfp(StringIO(CONFIG_DEFAULT))
+  logging.read('Default config read')
 
   if not os.path.exists(CONFIG_FILE):
     return parser
@@ -42,9 +44,9 @@ def Config():
   try:
     with open(CONFIG_FILE, 'rb') as fdc:
       parser.readfp(fdc)
+    logging.info('Config file %s read', CONFIG_FILE)
   except (IOError, SystemError):
     raise SystemError('No [vault] section configured')
-
   return parser
 
 
@@ -108,7 +110,7 @@ def main():
   config = Config()
 
   get_temp = partial(read_temp, config.get('FAN', 'thermal_file'))
-  fan = Fan(config.getint('pin'))
+  fan = Fan(config.getint('FAN', 'pin'))
 
   atexit.register(fan.cleanup)
   signal.signal(signal.SIGQUIT, sig_handler)
