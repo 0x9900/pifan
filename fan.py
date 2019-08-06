@@ -11,23 +11,48 @@ import signal
 import sys
 import time
 
+from ConfigParser import ConfigParser
+from io import StringIO
+
 import RPi.GPIO as io
 
-TEMPFILE = "/sys/class/thermal/thermal_zone0/temp"
-THRESHOLD = 42.0
-FAN_PIN = 26
-SLEEP = 31
 
 io.setmode(io.BCM)
 
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s',
                     datefmt='%H:%M:%S', level=logging.INFO)
 
+
+CONFIG_FILE = "/etc/fan.conf"
+CONFIG_DEFAULT = u"""
+[FAN]
+thermal_file: "/sys/class/thermal/thermal_zone0/temp")
+pin: 26
+sleep: 31
+threshold: 42.0
+"""
+
+def Config():
+  parser = ConfigParser()
+  parser.readfp(StringIO(CONFIG_DEFAULT))
+
+  if not os.path.exists(CONFIG_FILE):
+    return parser
+
+  try:
+    with open(CONFIG_FILE, 'rb') as fdc:
+      parser.readfp(fdc)
+  except (IOError, SystemError):
+    raise SystemError('No [vault] section configured')
+
+  return parser
+
+
 class Fan(object):
   """Manages the fan. This class initialise the GPIO pin and provide the
   methods to turn on and off the fan"""
 
-  def __init__(self, pin=FAN_PIN):
+  def __init__(self, pin):
     self._pin = pin
     io.setup(self._pin, io.OUT, initial=io.LOW)
     logging.info('GPIO pin(%s) configured', self._pin)
@@ -49,9 +74,9 @@ class Fan(object):
     logging.info('cleanup')
     io.cleanup()
 
-def get_temp():
+def read_temp(tempfile):
   try:
-    with open(TEMPFILE, "r") as tempfd:
+    with open(tempfile, "r") as tempfd:
       rawtemp = tempfd.readline().strip()
   except IOError as err:
     logging.error(err)
@@ -79,20 +104,22 @@ def sig_handler(sig, frame):
   sys.exit(0)
 
 def main():
-
   set_loglevel()
+  config = Config()
 
-  fan = Fan(FAN_PIN)
+  get_temp = partial(read_temp, config.get('FAN', 'thermal_file'))
+  fan = Fan(config.getint('pin'))
+
   atexit.register(fan.cleanup)
   signal.signal(signal.SIGQUIT, sig_handler)
   signal.signal(signal.SIGTERM, sig_handler)
 
   while True:
-    if get_temp() > THRESHOLD:
+    if get_temp() > config.getfloat('FAN', 'threshold'):
       fan.on()
     else:
       fan.off()
-    time.sleep(SLEEP)
+    time.sleep(config.getint('FAN', 'sleep'))
 
 if __name__ == "__main__":
   try:
