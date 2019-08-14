@@ -114,6 +114,22 @@ $ systemctl enable fan.service
 
 ```
 
+## Configuration.
+
+By default, pifan will use the GPIO pin `26` and the temperature
+threshold for turning on and off the fan is 42 degC (107 degF). You
+can change these values by creating a pifan configuration file in
+`/etc/fan.conf`
+
+Here is an example of this configuration file:
+```
+[FAN]
+thermal_file: /sys/class/thermal/thermal_zone0/temp
+pin: 26
+sleep: 31
+threshold: 42.0
+```
+
 ## Example
 
 Debug output of the program `fan` running.
