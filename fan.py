@@ -36,12 +36,13 @@ threshold: 42.0
 def Config():
   parser = ConfigParser()
   parser.readfp(StringIO(CONFIG_DEFAULT))
-  logging.info('Default config read')
 
   if not os.path.exists(CONFIG_FILE):
+    logging.info('Using default config')
     return parser
 
   try:
+    logging.info('Reading config file')
     with open(CONFIG_FILE, 'rb') as fdc:
       parser.readfp(fdc)
     logging.info('Config file %s read', CONFIG_FILE)
