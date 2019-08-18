@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # (c) W6BSD Fred Cirera
 # https://github.com/0x9900/pifan
@@ -11,7 +11,7 @@ import signal
 import sys
 import time
 
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from functools import partial
 from io import StringIO
 
@@ -36,13 +36,14 @@ threshold: 42.0
 def Config():
   parser = ConfigParser()
   parser.readfp(StringIO(CONFIG_DEFAULT))
-  logging.read('Default config read')
 
   if not os.path.exists(CONFIG_FILE):
+    logging.info('Using default config')
     return parser
 
   try:
-    with open(CONFIG_FILE, 'rb') as fdc:
+    logging.info('Reading config file')
+    with open(CONFIG_FILE, 'r') as fdc:
       parser.readfp(fdc)
     logging.info('Config file %s read', CONFIG_FILE)
   except (IOError, SystemError):
