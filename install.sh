@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 #
 # (c) W6BSD Fred Cirera.
 # https://github.com/0x9900/pifan
