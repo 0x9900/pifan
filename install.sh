@@ -4,6 +4,11 @@
 # https://github.com/0x9900/pifan
 #
 
+if [[ $(id -u) != 0 ]]; then
+    echo "Use sudo to run this command"
+    exit 1
+fi
+
 echo 'Installing fan.py'
 cp fan.py /usr/local/bin/fan
 chmod a+x /usr/local/bin/fan
