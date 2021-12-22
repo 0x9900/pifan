@@ -119,7 +119,7 @@ async def log_temperature(config):
   get_temp = partial(read_temp, config.get('FAN', 'thermal_file'))
   while True:
     logging.info("CPU temperature %.3f", get_temp())
-    await asyncio.sleep(900)
+    await asyncio.sleep(907)
 
 def main():
   set_loglevel()
