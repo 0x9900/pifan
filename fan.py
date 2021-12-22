@@ -4,6 +4,7 @@
 # https://github.com/0x9900/pifan
 #
 
+import asyncio
 import atexit
 import logging
 import os
@@ -50,7 +51,6 @@ def Config():
     raise SystemError('No [vault] section configured')
   return parser
 
-
 class Fan(object):
   """Manages the fan. This class initialise the GPIO pin and provide the
   methods to turn on and off the fan"""
@@ -71,6 +71,15 @@ class Fan(object):
       return
     io.output(self._pin, io.LOW)
     logging.debug('Fan(%d) -> OFF', self._pin)
+
+  async def run(self, config):
+    get_temp = partial(read_temp, config.get('FAN', 'thermal_file'))
+    while True:
+      if get_temp() > config.getfloat('FAN', 'threshold'):
+        self.on()
+      else:
+        self.off()
+      await asyncio.sleep(config.getint('FAN', 'sleep'))
 
   @staticmethod
   def cleanup():
@@ -106,23 +115,29 @@ def sig_handler(sig, frame):
   logging.critical('Signal: %d caught', sig)
   sys.exit(0)
 
+async def log_temperature(config):
+  get_temp = partial(read_temp, config.get('FAN', 'thermal_file'))
+  while True:
+    logging.info("CPU temperature %.3f", get_temp())
+    await asyncio.sleep(900)
+
 def main():
   set_loglevel()
   config = Config()
 
-  get_temp = partial(read_temp, config.get('FAN', 'thermal_file'))
   fan = Fan(config.getint('FAN', 'pin'))
 
   atexit.register(fan.cleanup)
   signal.signal(signal.SIGQUIT, sig_handler)
   signal.signal(signal.SIGTERM, sig_handler)
 
-  while True:
-    if get_temp() > config.getfloat('FAN', 'threshold'):
-      fan.on()
-    else:
-      fan.off()
-    time.sleep(config.getint('FAN', 'sleep'))
+  loop = asyncio.get_event_loop()
+  loop.create_task(log_temperature(config))
+  loop.create_task(fan.run(config))
+  try:
+    loop.run_forever()
+  except KeyboardInterrupt:
+    logging.info('Program interrupted')
 
 if __name__ == "__main__":
   try:
